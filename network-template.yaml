@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+# Physical Layer
+Parameters:
+  VpcCidrBlock:
+    Type: String
+    Default: 10.0.0.0/16  # Default CIDR block for the VPC
+  Az1:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-east-2a  # Default Availability Zone
+
+# Create the VPC resource using the specified parameters.
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCidrBlock  # Use the VpcCidrBlock parameter value
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+
+

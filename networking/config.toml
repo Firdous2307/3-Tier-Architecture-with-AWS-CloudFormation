@@ -1,0 +1,3 @@
+[deploy]
+STACK_NAME = '3-Tier-WebApp-Stack'
+TEMPLATE_FILE = 'aws/network-template.yaml'

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Use cfn-toml to parse the CloudFormation template values
-CFN_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/networking/network-template.yaml"
-CONFIG_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/networking/config.toml"
+CFN_PATH="/workspace/aws-bootcamp-cruddur-2023/networking/network-template.yaml"
+CONFIG_PATH="/workspace/aws-bootcamp-cruddur-2023/networking/config.toml"
 
 STACK_NAME=$(cfn-toml key deploy.STACK_NAME -t "$CONFIG_PATH")
 TEMPLATE_FILE=$(cfn-toml key deploy.TEMPLATE_FILE -t "$CONFIG_PATH")

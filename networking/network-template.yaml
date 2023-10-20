@@ -1,5 +1,4 @@
 AWSTemplateFormatVersion: 2010-09-09
-
 # Physical Layer
 Parameters:
   VpcCidrBlock:
@@ -29,7 +28,6 @@ Parameters:
     Description: "Additional Availability Zones for subnets"
     Type: AWS::EC2::AvailabilityZone::Name
     Default: "us-east-2c"
-
 
 # Data Link Layer (VPC and Subnets)
 # Create the VPC resource using the specified parameters.
@@ -70,6 +68,59 @@ Resources:
       Tags:
         - Key: Name
           Value: PublicSubnet3  # Name tag for identification in AWS Console
-
-
-          
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref Az1
+      CidrBlock: !Select [3, !Ref SubnetCidrBlocks]  # Use the fourth CIDR block from SubnetCidrBlocks
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: PrivateSubnet1  # Name tag for identification in AWS Console        
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref Az2
+      CidrBlock: !Select [4, !Ref SubnetCidrBlocks]  # Use the fifth CIDR block from SubnetCidrBlocks
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: PrivateSubnet2  # Name tag for identification in AWS Console        
+  PrivateSubnet3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref Az3
+      CidrBlock: !Select [5, !Ref SubnetCidrBlocks]  # Use the sixth CIDR block from SubnetCidrBlocks
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: PrivateSubnet3  # Name tag for identification in AWS Console        
+  PrivateDBSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref Az1
+      CidrBlock: !Select [6, !Ref SubnetCidrBlocks]  # Use the seventh CIDR block from SubnetCidrBlocks
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: PrivateDBSubnet1  # Name tag for identification in AWS Console
+  PrivateDBSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref Az2
+      CidrBlock: !Select [7, !Ref SubnetCidrBlocks]  # Use the eighth CIDR block from SubnetCidrBlocks
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: PrivateDBSubnet2  # Name tag for identification in AWS Console 
+  PrivateDBSubnet3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref Az3
+      CidrBlock: !Select [8, !Ref SubnetCidrBlocks]  # Use the nineth CIDR block from SubnetCidrBlocks
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: PrivateDBSubnet3  # Name tag for identification in AWS Console        
+               
+        

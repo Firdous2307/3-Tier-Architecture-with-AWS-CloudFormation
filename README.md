@@ -1,4 +1,4 @@
-# AWS-Networking-Projects Using AWS CloudFormation
+# 3-Tier-Architecture-with-AWS-CloudFormation
 
 | Layer | AWS Resource | Description |
 |-------|--------------|-------------|
@@ -26,7 +26,7 @@ This repository contains an AWS CloudFormation template for creating a Web Appli
   - `EnableDnsSupport` and `EnableDnsHostnames` are enabled.
   - A tag with the VPC name.
 
-### PublicSubnet1, PublicSubnet2, PublicSubnet3
+### PublicSubnets, PrivateSubnets, PrivateDBSubnets
 - Type: AWS::EC2::Subnet
 - Properties: 
   - `AvailabilityZone`: References the `Az1`, `Az2`, and `Az3` parameters.
@@ -37,11 +37,13 @@ This repository contains an AWS CloudFormation template for creating a Web Appli
 
 # CloudFormation Deployment Script Guide :rocket:
 
-This guide provides an explanation of the Bash script for deploying CloudFormation stacks along with a TOML configuration file. Make sure to follow these steps to set up your deployment process.
+This guide provides an explanation of the Bash script for deploying CloudFormation stacks along with a envfile. Make sure to follow these steps to set up your deployment process.
 
 ## Prerequisites :wrench:
 
 Before you begin, ensure that you have the following prerequisites:
 
 - [AWS CLI](https://aws.amazon.com/cli/) installed and configured with your AWS credentials.
-- [toml-cli](https://www.npmjs.com/package/toml-cli) installed. You can install it using `npm install -g toml-cli`.
+
+- [] 
+

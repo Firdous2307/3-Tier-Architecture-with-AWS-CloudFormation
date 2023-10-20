@@ -41,6 +41,33 @@ Resources:
       Tags:
         - Key: Name
           Value: MyVPC
+  # adding Internet Gateway and NAT Gateway for Public Access to the Internet
+  IGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: MyIGW
+
+  AttachIGW:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref MyVPC
+      InternetGatewayId: !Ref IGW
+
+  MyEIP:
+    Type: AWS::EC2::EIP
+
+  NATGW:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt MyEIP.AllocationId
+      ConnectivityType: public
+      SubnetId: !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: NATGateWay
+   
   PublicSubnet1:
    Type: AWS::EC2::Subnet
    Properties:
@@ -128,14 +155,23 @@ Resources:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref MyVPC # Associates the route table with the MyVPC 
+      Tags:
+        - Key: Name
+          Value: PublicRouteTable  # Name tag for identification in AWS Console
   PrivateRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref MyVPC # Associates the route table with the MyVPC 
+      Tags:
+        - Key: Name
+          Value: PrivateRouteTable  # Name tag for identification in AWS Console
   DBRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref MyVPC   # Associates the route table with the MyVPC            
+      VpcId: !Ref MyVPC   # Associates the route table with the MyVPC   
+      Tags:
+        - Key: Name
+          Value: DBRouteTable  # Name tag for identification in AWS Console         
 
 # Associating the route tables with their various subnets
   PublicSubnet1RouteAssociation:

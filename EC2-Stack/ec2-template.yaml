@@ -1,0 +1,8 @@
+## Adding EC2 Instances
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Creating EC2 instance with specific parameters
+
+MyKeyPair:
+  Type: AWS::EC2::KeyPair
+  Properties:
+    KeyName: !Ref KeyName

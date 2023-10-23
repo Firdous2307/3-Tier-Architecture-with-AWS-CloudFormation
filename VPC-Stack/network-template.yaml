@@ -74,13 +74,13 @@ Resources:
       RouteTableId: !Ref PublicRouteTable
       GatewayId: !Ref IGW
       DestinationCidrBlock: 0.0.0.0/0
-  RoutetoNATGW:
+  RoutetoNATGW1:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref PrivateRouteTable
       GatewayId: !Ref NATGW
       DestinationCidrBlock: 0.0.0.0/0
-  RoutetoNATIGW:
+  RoutetoNATGW2:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref DBRouteTable

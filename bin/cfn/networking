@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # accessing the env variables
-STACK_NAME="WebApp3Tier"
-TEMPLATE_FILE="networking/network-template.yaml"
+STACK_NAME="VPC-Stack"
+TEMPLATE_FILE="VPC-Stack/network-template.yaml"
 
 # Deploy the CloudFormation stack
 aws cloudformation deploy \

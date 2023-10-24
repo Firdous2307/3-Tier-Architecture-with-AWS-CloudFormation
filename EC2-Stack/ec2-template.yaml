@@ -2,7 +2,52 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Creating EC2 instance with specific parameters
 
-MyKeyPair:
-  Type: AWS::EC2::KeyPair
-  Properties:
-    KeyName: !Ref KeyName
+## first test server instances 
+Resources:
+  EC2Instance1:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: t2.micro
+      ImageId: # Amazon Linux 2 AMI
+      KeyName: !Ref KeyName
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          SubnetId: !Ref PublicSubnet1
+      SecurityGroupIds:
+    #    - !Ref SecurityGroup1 
+      Tags:
+        - Key: Name
+          Value: test-server
+
+### php server
+  EC2Instance2:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: t2.micro
+      ImageId:   # Amazon Linux 2 AMI   
+      KeyName: !Ref KeyName
+      NetworkInterfaces:
+        - DeviceIndex: 0
+          SubnetId: !Ref PrivateSubnet1
+      SecurityGroupIds:
+    #    - !Ref SecurityGroup2
+      Tags:
+        - Key: Name
+          Value: php-server-1  
+
+    ## php-server-2
+  EC2Instance3:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: t2.micro
+      ImageId: # Amazon Linux 2 AMI
+      KeyName: !Ref KeyName
+      NetworkInterfaces:
+        - DeviceIndex: 0
+          SubnetId: !Ref PrivateSubnet2 
+      SecurityGroupIds:
+    #    - !Ref SecurityGroup2
+      Tags:
+        - Key: Name
+          Value: php-server-2

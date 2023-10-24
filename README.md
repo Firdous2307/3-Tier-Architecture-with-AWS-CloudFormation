@@ -47,3 +47,6 @@ Before you begin, ensure that you have the following prerequisites:
 
 - [] 
 
+``` sh
+aws ec2 describe-images --filters "Name=name,Values=amzn2-ami-hvm-2.0.*" "Name=state,Values=available" --query 'Images[0].ImageId' --output text
+```

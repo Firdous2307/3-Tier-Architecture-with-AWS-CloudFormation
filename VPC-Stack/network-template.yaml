@@ -231,3 +231,87 @@ Resources:
     Properties:
       RouteTableId: !Ref DBRouteTable 
       SubnetId: !Ref PrivateDBSubnet3                   
+Outputs:
+  VPCId:
+    Description: The ID of the VPC
+    Value: !Ref MyVPC
+
+  IGWId:
+    Description: The ID of the Internet Gateway
+    Value: !Ref IGW
+
+  MyEIPAllocationId:
+    Description: The Allocation ID of the Elastic IP
+    Value: !GetAtt MyEIP.AllocationId
+
+  NATGWId:
+    Description: The ID of the NAT Gateway
+    Value: !Ref NATGW
+
+  PublicRouteTableId:
+    Description: The ID of the Public Route Table
+    Value: !Ref PublicRouteTable
+
+  PrivateRouteTableId:
+    Description: The ID of the Private Route Table
+    Value: !Ref PrivateRouteTable
+
+  DBRouteTableId:
+    Description: The ID of the DB Route Table
+    Value: !Ref DBRouteTable
+
+  PublicSubnet1Id:
+    Description: The ID of Public Subnet 1
+    Value: !Ref PublicSubnet1
+
+  PublicSubnet2Id:
+    Description: The ID of Public Subnet 2
+    Value: !Ref PublicSubnet2
+
+  PublicSubnet3Id:
+    Description: The ID of Public Subnet 3
+    Value: !Ref PublicSubnet3
+
+  PrivateSubnet1Id:
+    Description: The ID of Private Subnet 1
+    Value: !Ref PrivateSubnet1
+
+  PrivateSubnet2Id:
+    Description: The ID of Private Subnet 2
+    Value: !Ref PrivateSubnet2
+
+  PrivateSubnet3Id:
+    Description: The ID of Private Subnet 3
+    Value: !Ref PrivateSubnet3
+
+  PrivateDBSubnet1Id:
+    Description: The ID of Private DB Subnet 1
+    Value: !Ref PrivateDBSubnet1
+
+  PrivateDBSubnet2Id:
+    Description: The ID of Private DB Subnet 2
+    Value: !Ref PrivateDBSubnet2
+
+  PrivateDBSubnet3Id:
+    Description: The ID of Private DB Subnet 3
+    Value: !Ref PrivateDBSubnet3
+
+  PublicSubnet1Export:
+    Description: Export for Public Subnet 1
+    Value: !Ref PublicSubnet1
+    Export:
+      Name: VPC-Stack-PublicSubnet1    
+
+  PrivateSubnet1Export:
+    Description: Export for  Private Subnet 1
+    Value: !Ref PrivateSubnet1
+    Export:
+      Name: VPC-Stack-PrivateSubnet1
+
+  PrivateSubnet2Export:
+    Description: Export for  Private Subnet 2
+    Value: !Ref PrivateSubnet2
+    Export:
+      Name: VPC-Stack-PrivateSubnet2    
+
+

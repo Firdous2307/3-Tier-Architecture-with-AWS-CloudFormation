@@ -45,8 +45,11 @@ Before you begin, ensure that you have the following prerequisites:
 
 - [AWS CLI](https://aws.amazon.com/cli/) installed and configured with your AWS credentials.
 
-- [] 
-
 ``` sh
 aws ec2 describe-images --filters "Name=name,Values=amzn2-ami-hvm-2.0.*" "Name=state,Values=available" --query 'Images[0].ImageId' --output text
 ```
+
+Fixed the SubnetCidrBlocks parameter to include the CIDR blocks as a single string.
+Corrected the RoutetoNATGW1 and RoutetoNATGW2 to use `NatGatewayId` instead of `GatewayId` to specify the NAT Gateway.
+
+*Note*: NAT Gateways in AWS are immutable, which means you cannot directly update them. If you need to make changes to a NAT Gateway, you typically need to create a new one and update your route tables to use the new NAT Gateway.

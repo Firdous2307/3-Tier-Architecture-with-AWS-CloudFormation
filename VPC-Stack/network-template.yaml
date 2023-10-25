@@ -10,16 +10,7 @@ Parameters:
   SubnetCidrBlocks:
     Description: "A list of CIDR blocks for subnets"
     Type: CommaDelimitedList
-    Default: >
-      10.0.0.0/24, 
-      10.0.4.0/24,
-      10.0.8.0/24,
-      10.0.12.0/24,
-      10.0.16.0/24,
-      10.0.20.0/24,
-      10.0.24.0/24,
-      10.0.28.0/24,
-      10.0.32.0/24
+    Default: "10.0.0.0/24,10.0.4.0/24,10.0.8.0/24,10.0.12.0/24,10.0.16.0/24,10.0.20.0/24,10.0.24.0/24,10.0.28.0/24,10.0.32.0/24"
   Az2:
     Description: "Availability Zones for subnets"
     Type: AWS::EC2::AvailabilityZone::Name
@@ -42,7 +33,7 @@ Resources:
         - Key: Name
           Value: MyVPC
 
-  # adding Internet Gateway,Elastic IP and NAT Gateway for Public Access to the Internet
+  # Adding Internet Gateway, Elastic IP, and NAT Gateway for Public Access to the Internet
   IGW:
     Type: AWS::EC2::InternetGateway
     Properties:
@@ -63,29 +54,32 @@ Resources:
     Type: AWS::EC2::NatGateway
     Properties:
       AllocationId: !GetAtt MyEIP.AllocationId
-      ConnectivityType: public
       SubnetId: !Ref PublicSubnet1
       Tags:
         - Key: Name
           Value: NATGateWay
+
   RouteToIGW:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref PublicRouteTable
       GatewayId: !Ref IGW
       DestinationCidrBlock: 0.0.0.0/0
+
+  # Routes to NAT Gateway for Private Subnets
   RoutetoNATGW1:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref PrivateRouteTable
-      GatewayId: !Ref NATGW
+      NatGatewayId: !Ref NATGW
       DestinationCidrBlock: 0.0.0.0/0
+
   RoutetoNATGW2:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref DBRouteTable
-      GatewayId: !Ref NATGW
-      DestinationCidrBlock: 0.0.0.0/0               
+      NatGatewayId: !Ref NATGW
+      DestinationCidrBlock: 0.0.0.0/0              
   PublicSubnet1:
    Type: AWS::EC2::Subnet
    Properties:

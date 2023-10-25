@@ -2,7 +2,7 @@
 
 # accessing the env variables
 STACK_NAME="VPC-Stack"
-TEMPLATE_FILE="VPC-Stack/network-template.yaml"
+TEMPLATE_FILE="VPC/network-template.yaml"
 
 # Deploy the CloudFormation stack
 aws cloudformation deploy \

@@ -56,5 +56,3 @@ Corrected the RoutetoNATGW1 and RoutetoNATGW2 to use `NatGatewayId` instead of `
 
 
 In AWS CloudFormation, when you define NetworkInterfaces for an EC2 instance, you shouldn't specify SecurityGroupIds in the Properties of the instance resource.
-
-I created a KeyPair via the AWS Console. Why? Following the deploy of the previous ec2-instances, I could not connect to my servers without having the keypair file on my local machine.

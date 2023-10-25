@@ -1,13 +1,13 @@
-#!/bin/bash
+# !/bin/bash
 
 # accessing the env variables
-#STACK_NAME="WebApp3Tier"
-#TEMPLATE_FILE="VPC-Stack/network-template.yaml"
+STACK_NAME="EC2-Stack"
+TEMPLATE_FILE="EC2/ec2-template.yaml"
 
 # Deploy the CloudFormation stack
-#aws cloudformation deploy \
-#  --stack-name "$STACK_NAME" \
-#  --template-file "$TEMPLATE_FILE" \
-#  --region "us-east-2" \
-#  --no-execute-changeset \
-#  --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation deploy \
+  --stack-name "$STACK_NAME" \
+  --template-file "$TEMPLATE_FILE" \
+  --region "us-east-2" \
+  --no-execute-changeset \
+  --capabilities CAPABILITY_NAMED_IAM

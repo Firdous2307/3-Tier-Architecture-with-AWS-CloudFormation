@@ -53,3 +53,6 @@ Fixed the SubnetCidrBlocks parameter to include the CIDR blocks as a single stri
 Corrected the RoutetoNATGW1 and RoutetoNATGW2 to use `NatGatewayId` instead of `GatewayId` to specify the NAT Gateway.
 
 *Note*: NAT Gateways in AWS are immutable, which means you cannot directly update them. If you need to make changes to a NAT Gateway, you typically need to create a new one and update your route tables to use the new NAT Gateway.
+
+
+In AWS CloudFormation, when you define NetworkInterfaces for an EC2 instance, you shouldn't specify SecurityGroupIds in the Properties of the instance resource.

@@ -235,6 +235,8 @@ Outputs:
   VPCId:
     Description: The ID of the VPC
     Value: !Ref MyVPC
+    Export:
+      Name: VPC-Stack-VPCId
 
   IGWId:
     Description: The ID of the Internet Gateway

@@ -7,12 +7,12 @@ Resources:
     Properties:
       KeyName: my-new-key-pair
 
-  #  Security group for the Test Server
+  # Security group for the Test Server
   TestServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Security group for Test Server
-      # Import the VPC ID from another stack(VPC-Stack)
+      # Import the VPC ID from another stack (VPC-Stack)
       VpcId: !ImportValue VPC-Stack-VPCId
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
@@ -28,7 +28,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Security group for PHP Server 1
-      # Import the VPC ID from another stack(VPC-Stack)
+      # Import the VPC ID from another stack (VPC-Stack)
       VpcId: !ImportValue VPC-Stack-VPCId
       # Allow inbound traffic from the Test Server's security group
       SecurityGroupIngress:
@@ -40,50 +40,48 @@ Resources:
         - Key: Name
           Value: PHPSecurityGroup1
 
-  # EC2 instance for the Test Server
+  # EC2 instance for the Test Server in PublicSubnet1
   TestServerInstance:
     Type: 'AWS::EC2::Instance'
     Properties:
       InstanceType: t2.micro
       ImageId: ami-08f3d5d5f119fbb31 # Amazon Linux 2 AMI
       KeyName: !Ref MyKeyPair
-      # Associate the instance with the public subnet from your VPC
       SubnetId: !ImportValue VPC-Stack-PublicSubnet1
-      # Assign the Test Server security group to this instance
+      # Enable public IP auto-assignment
+      AssociatePublicIpAddress: true
       SecurityGroupIds:
         - !Ref TestServerSecurityGroup
       Tags:
         - Key: Name
           Value: test-server
 
-  # EC2 instance for PHP Server 1
-  PHPServer1Instance:
-    Type: 'AWS::EC2::Instance'
-    Properties:
-      InstanceType: t2.micro
-      ImageId: ami-08f3d5d5f119fbb31 # Amazon Linux 2 AMI
-      KeyName: !Ref MyKeyPair
-      # Associate the instance with the private subnet from your VPC
-      SubnetId: !ImportValue VPC-Stack-PrivateSubnet1
-      # Assign the PHP Server 1 security group to this instance
-      SecurityGroupIds:
-        - !Ref PHPServer1SecurityGroup
-      Tags:
-        - Key: Name
-          Value: php-server-1
+  # EC2 instance for PHP Server 1 in PrivateSubnet1
+PHPServer1Instance:
+  Type: 'AWS::EC2::Instance'
+  Properties:
+    InstanceType: t2.micro
+    ImageId: ami-08f3d5d5f119fbb31 # Amazon Linux 2 AMI
+    KeyName: !Ref MyKeyPair
+    SubnetId: !ImportValue VPC-Stack-PrivateSubnet1
+    SecurityGroupIds:
+      - !Ref PHPServer1SecurityGroup
+    Tags:
+      - Key: Name
+        Value: php-server-1
 
-  # EC2 instance for PHP Server 2
+# EC2 instance for PHP Server 2 in PrivateSubnet2
   PHPServer2Instance:
-    Type: 'AWS::EC2::Instance'
-    Properties:
-      InstanceType: t2.micro
-      ImageId: ami-08f3d5d5f119fbb31 # Amazon Linux 2 AMI
-      KeyName: !Ref MyKeyPair
-     # Associate the instance with another private subnet from your VPC
-      SubnetId: !ImportValue VPC-Stack-PrivateSubnet2
-      # Assign the same PHP Server 1 security group to this instance
-      SecurityGroupIds:
-        - !Ref PHPServer1SecurityGroup
-      Tags:
-        - Key: Name
-          Value: php-server-2
+  Type: 'AWS::EC2::Instance'
+  Properties:
+    InstanceType: t2.micro
+    ImageId: ami-08f3d5d5f119fbb31 # Amazon Linux 2 AMI
+    KeyName: !Ref MyKeyPair
+    SubnetId: !ImportValue VPC-Stack-PrivateSubnet2
+    SecurityGroupIds:
+      - !Ref PHPServer1SecurityGroup
+    Tags:
+      - Key: Name
+        Value: php-server-2
+
+

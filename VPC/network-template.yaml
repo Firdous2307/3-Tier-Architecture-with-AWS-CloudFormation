@@ -27,8 +27,6 @@ Resources:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: !Ref VpcCidrBlock  # Use the VpcCidrBlock parameter value
-      EnableDnsSupport: true
-      EnableDnsHostnames: true
       Tags:
         - Key: Name
           Value: MyVPC

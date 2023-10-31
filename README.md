@@ -56,3 +56,6 @@ Corrected the RoutetoNATGW1 and RoutetoNATGW2 to use `NatGatewayId` instead of `
 
 
 In AWS CloudFormation, when you define NetworkInterfaces for an EC2 instance, you shouldn't specify SecurityGroupIds in the Properties of the instance resource.
+
+I do not know why I keep getting an error anyime i try to **AssociatePublicIpAddress** for my `TestServerInstance``. I have a Public Subnet, so i am thinking, I do not need to assign it, it will automatically do that for me, but no it does not. 
+

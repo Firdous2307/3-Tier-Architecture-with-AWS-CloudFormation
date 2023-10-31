@@ -59,3 +59,4 @@ In AWS CloudFormation, when you define NetworkInterfaces for an EC2 instance, yo
 
 I do not know why I keep getting an error anyime i try to **AssociatePublicIpAddress** for my `TestServerInstance``. I have a Public Subnet, so i am thinking, I do not need to assign it, it will automatically do that for me, but no it does not. 
 
+Okay, so the issue was not enabling public IP address for my subnet, Fixed that already.

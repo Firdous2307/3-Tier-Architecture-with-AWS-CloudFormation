@@ -47,13 +47,16 @@ Resources:
       VpcId: !Ref MyVPC
       InternetGatewayId: !Ref IGW
 
-  MyEIP:
+  NatGatewayEIP:
     Type: AWS::EC2::EIP
+    DependsOn: AttachIGW
+    Properties:
+      Domain: vpc
 
   NATGW:
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId: !GetAtt MyEIP.AllocationId
+      AllocationId: !GetAtt NatGatewayEIP.AllocationId
       SubnetId: !Ref PublicSubnet1
       Tags:
         - Key: Name
@@ -79,7 +82,9 @@ Resources:
     Properties:
       RouteTableId: !Ref DBRouteTable
       NatGatewayId: !Ref NATGW
-      DestinationCidrBlock: 0.0.0.0/0              
+      DestinationCidrBlock: 0.0.0.0/0  
+      
+  ## Subnets                
   PublicSubnet1:
    Type: AWS::EC2::Subnet
    Properties:
@@ -232,88 +237,69 @@ Resources:
       RouteTableId: !Ref DBRouteTable 
       SubnetId: !Ref PrivateDBSubnet3                   
 Outputs:
-  VPCId:
+  VPC:
     Description: The ID of the VPC
     Value: !Ref MyVPC
     Export:
-      Name: VPC-Stack-VPCId
+      Name: 3tier-VPC
 
-  IGWId:
-    Description: The ID of the Internet Gateway
+  InternetGateway:
+    Description: A reference to the internet gateway
     Value: !Ref IGW
+    Export:
+      Name: 3tier-IGW  
 
-  MyEIPAllocationId:
-    Description: The Allocation ID of the Elastic IP
-    Value: !GetAtt MyEIP.AllocationId
-
-  NATGWId:
-    Description: The ID of the NAT Gateway
-    Value: !Ref NATGW
-
-  PublicRouteTableId:
-    Description: The ID of the Public Route Table
-    Value: !Ref PublicRouteTable
-
-  PrivateRouteTableId:
-    Description: The ID of the Private Route Table
-    Value: !Ref PrivateRouteTable
-
-  DBRouteTableId:
-    Description: The ID of the DB Route Table
-    Value: !Ref DBRouteTable
-
-  PublicSubnet1Id:
+  PublicSubnet1:
     Description: The ID of Public Subnet 1
     Value: !Ref PublicSubnet1
+    Export:
+      Name: 3tier-PublicSubnet1
 
-  PublicSubnet2Id:
+  PublicSubnet2:
     Description: The ID of Public Subnet 2
     Value: !Ref PublicSubnet2
+    Export:
+      Name: 3tier-PublicSubnet2
 
-  PublicSubnet3Id:
+  PublicSubnet3:
     Description: The ID of Public Subnet 3
     Value: !Ref PublicSubnet3
+    Export:
+      Name: 3tier-PublicSubnet3
 
-  PrivateSubnet1Id:
+  PrivateSubnet1:
     Description: The ID of Private Subnet 1
     Value: !Ref PrivateSubnet1
+    Export:
+      Name: 3tier-PrivateSubnet1
 
-  PrivateSubnet2Id:
+  PrivateSubnet2:
     Description: The ID of Private Subnet 2
     Value: !Ref PrivateSubnet2
+    Export:
+      Name: 3tier-PrivateSubnet2
 
-  PrivateSubnet3Id:
+  PrivateSubnet3:
     Description: The ID of Private Subnet 3
     Value: !Ref PrivateSubnet3
+    Export:
+      Name: 3tier-PrivateSubnet3
 
-  PrivateDBSubnet1Id:
+  PrivateDBSubnet1:
     Description: The ID of Private DB Subnet 1
     Value: !Ref PrivateDBSubnet1
+    Export:
+      Name: 3tier-PrivateDBSubnet1
 
-  PrivateDBSubnet2Id:
+  PrivateDBSubnet2:
     Description: The ID of Private DB Subnet 2
     Value: !Ref PrivateDBSubnet2
+    Export:
+      Name: 3tier-PrivateDBSubnet2
 
-  PrivateDBSubnet3Id:
+
+  PrivateDBSubnet3:
     Description: The ID of Private DB Subnet 3
     Value: !Ref PrivateDBSubnet3
-
-  PublicSubnet1Export:
-    Description: Export for Public Subnet 1
-    Value: !Ref PublicSubnet1
     Export:
-      Name: VPC-Stack-PublicSubnet1    
-
-  PrivateSubnet1Export:
-    Description: Export for  Private Subnet 1
-    Value: !Ref PrivateSubnet1
-    Export:
-      Name: VPC-Stack-PrivateSubnet1
-
-  PrivateSubnet2Export:
-    Description: Export for  Private Subnet 2
-    Value: !Ref PrivateSubnet2
-    Export:
-      Name: VPC-Stack-PrivateSubnet2    
-
-
+      Name: 3tier-PrivateDBSubnet3

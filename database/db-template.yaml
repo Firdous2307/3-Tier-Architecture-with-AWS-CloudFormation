@@ -1,7 +1,14 @@
-Description:  This template deploys an RDS database in a DB Subnet group that spans
-              2 AZs.
+Description: |
+  This template provisions an Amazon RDS (Relational Database Service) instance
+  in a multi-Availability Zone (AZ) setup within a DB subnet group. 
+  The RDS instance is configured with the specified database engine (MySQL), 
+  security groups, and other parameters.
 
 Parameters:
+  Az1:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-east-2a  # Default Availability Zone
+
   DBUsername:
     Description: Enter a username to be used with the RDS database
     Type: String
@@ -13,6 +20,7 @@ Parameters:
     Default: password
 
 Resources:
+  # Create a DB subnet group for RDS
   DBSubnetGroup:  
     Type: AWS::RDS::DBSubnetGroup
     Properties: 
@@ -21,6 +29,8 @@ Resources:
       SubnetIds:  
         - !ImportValue 3tier-PrivateDBSubnet1
         - !ImportValue 3tier-PrivateDBSubnet2
+
+  # Create a security group for the RDS instance
   DBTierSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -31,4 +41,31 @@ Resources:
           IpProtocol: tcp
           FromPort: 3306
           ToPort: 3306
-  
+
+  # Authorize inbound traffic from the PHP Server's security group
+  MyDBSecurityGroupIngress:
+    Type: "AWS::EC2::SecurityGroupIngress"
+    Properties:
+      GroupId: !GetAtt DBTierSecurityGroup.GroupId
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      SourceSecurityGroupId: !ImportValue 3tier-PHPServer1SecurityGroup
+
+  # Create the RDS instance
+  RDSInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBName: mydatabase
+      AvailabilityZone: !Ref Az1
+      DBInstanceClass: db.t3.micro 
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      VPCSecurityGroups: [!Ref DBTierSecurityGroup]
+      Engine: mysql
+      MultiAZ: false
+      PubliclyAccessible: false
+      StorageType: gp2
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      AllocatedStorage: 20
+      MaxAllocatedStorage: 22

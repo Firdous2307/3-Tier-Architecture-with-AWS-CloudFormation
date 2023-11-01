@@ -152,3 +152,58 @@ Resources:
         - 
           TargetGroupArn: !Ref MyALBTargetGroup
           Type: forward    
+
+Outputs:
+  TestServerInstanceOutput:
+    Description: ID of the Test Server EC2 instance
+    Value: !Ref TestServerInstance
+    Export:
+      Name: 3tier-TestServerInstance
+
+  PHPServer1InstanceOutput:
+    Description: ID of the PHP Server 1 EC2 instance
+    Value: !Ref PHPServer1Instance
+    Export:
+      Name: 3tier-PHPServer1Instance
+
+  PHPServer2InstanceOutput:
+    Description: ID of the PHP Server 2 EC2 instance
+    Value: !Ref PHPServer2Instance
+    Export:
+      Name: 3tier-PHPServer2Instance
+
+  TestServerSecurityGroupId:
+    Description: ID of the Test Server Security Group
+    Value: !Ref TestServerSecurityGroup
+    Export:
+      Name: 3tier-TestServerSecurityGroup
+
+  PHPServer1SecurityGroupId:
+    Description: ID of the PHP Server Security Group
+    Value: !Ref PHPServer1SecurityGroup
+    Export:
+      Name: 3tier-PHPServer1SecurityGroup
+
+  MyALBDNSName:
+    Description: DNS name of the Application Load Balancer
+    Value: !Ref MyALB
+    Export:
+      Name: 3tier-MyALBDNSName
+
+  MyALBSecurityGroupId:
+    Description: ID of the Application Load Balancer Security Group
+    Value: !Ref MyALBSecurityGroup
+    Export:
+      Name: 3tier-MyALBSecurityGroup
+
+  MyALBId:
+    Description: ID of the Application Load Balancer
+    Value: !Ref MyALB
+    Export:
+      Name: 3tier-MyALB
+
+  MyALBTargetGroupId:
+    Description: ID of the Target Group associated with the ALB
+    Value: !Ref MyALBTargetGroup
+    Export:
+      Name: 3tier-MyALBTargetGroup    

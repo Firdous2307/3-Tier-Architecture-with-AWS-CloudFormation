@@ -1,62 +1,76 @@
 # 3-Tier-Architecture-with-AWS-CloudFormation
 
-| Layer | AWS Resource | Description |
-|-------|--------------|-------------|
-| 1. Physical Layer(VPC) | `AWS::EC2::VPC` | The foundational layer that defines the physical infrastructure, such as the VPC (Virtual Private Cloud). |
-| 2. Data Link Layer (VPC and Subnets) | `AWS::EC2::Subnet` | Manages data organization on the network, including the creation of subnets within the VPC. |
+## VPC Stack
 
+In this section, you'll find information about the resources defined in the AWS CloudFormation template for creating a Virtual Private Cloud (VPC) infrastructure and its associated components. The following are the key resources in the stack:
 
-# CloudFormation VPC Deployment :cloud:
+1. **VPC (Virtual Private Cloud)**:
+   - [VPC](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-vpc.html) - The Virtual Private Cloud resource in the template.
 
-This repository contains an AWS CloudFormation template for creating a Web Application
-## Parameters :gear:
+2. **Internet Gateway**:
+   - [Internet Gateway](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-internetgateway.html) - The Internet Gateway resource in the template.
 
-- `VpcCidrBlock` (Default: 10.0.0.0/16): Specifies the CIDR block for the VPC.
-- `Az1` (Default: us-east-2a): Sets the default Availability Zone for the VPC.
-- `SubnetCidrBlocks`: A list of CIDR blocks for subnets.
-- `Az2` (Default: us-east-2b): Additional Availability Zone for subnets.
-- `Az3` (Default: us-east-2c): Another Availability Zone for subnets.
+3. **Subnets**:
+   - [Subnet](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-subnet.html) - The Subnet resources in the template.
 
-## Resources :building_construction:
+4. **Route Tables**:
+   - [Route Table](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-routetable.html) - The Route Table resources in the template.
 
-### MyVPC
-- Type: AWS::EC2::VPC
-- Properties: 
-  - `CidrBlock`: Uses the `VpcCidrBlock` parameter value.
-  - `EnableDnsSupport` and `EnableDnsHostnames` are enabled.
-  - A tag with the VPC name.
+5. **NAT Gateway**:
+   - [NAT Gateway](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-natgateway.html) - The NAT Gateway resource in the template.
 
-### PublicSubnets, PrivateSubnets, PrivateDBSubnets
-- Type: AWS::EC2::Subnet
-- Properties: 
-  - `AvailabilityZone`: References the `Az1`, `Az2`, and `Az3` parameters.
-  - `CidrBlock`: Selects CIDR blocks from `SubnetCidrBlocks`.
-  - `VpcId`: References the `MyVPC`.
-  - Tags with subnet names.
+6. **Elastic IP**:
+   - [EIP](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-eip.html) - The Elastic IP resource in the template.
 
+7. **VPC Gateway Attachment**:
+   - [VPCGatewayAttachment](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-vpc-gateway-attachment.html) - The VPC Gateway Attachment resource in the template.
 
-# CloudFormation Deployment Script Guide :rocket:
+8. **Subnet Route Table Association**:
+   - [SubnetRouteTableAssociation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-subnetroutetableassociation.html) - The Subnet Route Table Association resources in the template.
 
-This guide provides an explanation of the Bash script for deploying CloudFormation stacks along with a envfile. Make sure to follow these steps to set up your deployment process.
+## EC2 Stack
 
-## Prerequisites :wrench:
+In this section, you'll find information about the resources defined in the AWS CloudFormation template for deploying EC2 instances and an Application Load Balancer (ALB). The following are the key resources in the stack:
 
-Before you begin, ensure that you have the following prerequisites:
+1. **Security Group for Test Server**:
+   - [Security Group](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-securitygroup.html) - The security group for the Test Server in the template.
+2. **Security Group for PHP Server 1**:
+   - [Security Group](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-securitygroup.html) - The security group for PHP Server 1 in the template.
 
-- [AWS CLI](https://aws.amazon.com/cli/) installed and configured with your AWS credentials.
+3. **EC2 Instance for Test Server**:
+   - [EC2 Instance](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance.html) - The EC2 instance for the Test Server in the template.
 
-``` sh
-aws ec2 describe-images --filters "Name=name,Values=amzn2-ami-hvm-2.0.*" "Name=state,Values=available" --query 'Images[0].ImageId' --output text
-```
+4. **EC2 Instance for PHP Server 1**:
+   - [EC2 Instance](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance.html) - The EC2 instance for PHP Server 1 in the template.
 
-Fixed the SubnetCidrBlocks parameter to include the CIDR blocks as a single string.
-Corrected the RoutetoNATGW1 and RoutetoNATGW2 to use `NatGatewayId` instead of `GatewayId` to specify the NAT Gateway.
+5. **EC2 Instance for PHP Server 2**:
+   - [EC2 Instance](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance.html) - The EC2 instance for PHP Server 2 in the template.
 
-*Note*: NAT Gateways in AWS are immutable, which means you cannot directly update them. If you need to make changes to a NAT Gateway, you typically need to create a new one and update your route tables to use the new NAT Gateway.
+6. **Application Load Balancer Security Group**:
+   - [Security Group](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-securitygroup.html) - The security group for the Application Load Balancer (ALB) in the template.
 
+7. **Application Load Balancer**:
+   - [Application Load Balancer](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-loadbalancer.html) - The Application Load Balancer (ALB) resource in the template.
 
-In AWS CloudFormation, when you define NetworkInterfaces for an EC2 instance, you shouldn't specify SecurityGroupIds in the Properties of the instance resource.
+8. **Application Load Balancer Target Group**:
+   - [Target Group](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html) - The target group associated with the ALB in the template.
 
-I do not know why I keep getting an error anyime i try to **AssociatePublicIpAddress** for my `TestServerInstance``. I have a Public Subnet, so i am thinking, I do not need to assign it, it will automatically do that for me, but no it does not. 
+9. **Application Load Balancer Listener**:
+   - [Listener](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-listener.html) - The listener for the ALB in the template.
 
-Okay, so the issue was not enabling public IP address for my subnet, Fixed that already.
+## DB Stack
+
+In this section, you'll find information about the resources defined in the AWS CloudFormation template for provisioning an Amazon RDS (Relational Database Service) instance. The following are the key resources in the stack:
+
+1. **DB Subnet Group**:
+   - [DB Subnet Group](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-dbsubnetgroup.html) - The DB Subnet Group resource in the template used for RDS.
+
+2. **Security Group for the RDS Instance**:
+   - [Security Group](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-securitygroup.html) - The security group for the RDS instance in the template.
+
+3. **Inbound Traffic Rule for RDS Security Group**:
+   - [Security Group Ingress](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-security-group-ingress.html) - The inbound traffic rule for the RDS security group in the template.
+
+4. **RDS Instance**:
+   - [RDS Instance](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-rds-database-instance.html) - The RDS database instance in your template.
+

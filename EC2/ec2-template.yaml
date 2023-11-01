@@ -1,11 +1,16 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create EC2 Instances
+
+Description: |
+  This template creates resources for deploying EC2 instances and an Application Load Balancer (ALB) 
+  within a specified Virtual Private Cloud (VPC). The template includes security groups, EC2 instances, 
+  and an ALB to support a multi-tier application setup.
 
 Resources:
-  #MyKeyPair:
-  #  Type: 'AWS::EC2::KeyPair'
-  #  Properties:
-  #    KeyName: my-new-key-pair
+  # Key Pair (Optional - Uncomment if needed)
+  # MyKeyPair:
+  #   Type: 'AWS::EC2::KeyPair'
+  #   Properties:
+  #     KeyName: my-new-key-pair
 
   # Security group for the Test Server
   TestServerSecurityGroup:
@@ -30,7 +35,7 @@ Resources:
       GroupDescription: Security group for PHP Server 1
       # Import the VPC ID from another stack (VPC-Stack)
       VpcId: !ImportValue 3tier-VPC
-      # Allow inbound traffic from the Test Server's security group
+      # Allow inbound traffic from the Test Server's security group and ALB's security group
       SecurityGroupIngress:
         - SourceSecurityGroupId: !Ref TestServerSecurityGroup
           IpProtocol: tcp
@@ -85,22 +90,20 @@ Resources:
       Tags:
         - Key: Name
           Value: php-server-2
-# Application Load Balancer
+
+  # Application Load Balancer Security Group
   MyALBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Security group for ALB 
       GroupName: ALB_SG
-
       VpcId: !ImportValue 3tier-VPC
-
       SecurityGroupIngress: 
         - 
           CidrIp: 0.0.0.0/0
           FromPort: 80
           ToPort: 80
           IpProtocol: tcp
-
       SecurityGroupEgress:
         -
           CidrIp: 0.0.0.0/0
@@ -108,6 +111,7 @@ Resources:
           ToPort: 80
           IpProtocol: tcp
 
+  # Application Load Balancer
   MyALB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -121,6 +125,7 @@ Resources:
         - !Ref MyALBSecurityGroup
       IpAddressType: ipv4
 
+  # Application Load Balancer Target Group
   MyALBTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
@@ -142,6 +147,7 @@ Resources:
       - Id: !Ref PHPServer1Instance
       - Id: !Ref PHPServer2Instance     
 
+  # Application Load Balancer Listener
   MyALBListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -186,7 +192,7 @@ Outputs:
 
   MyALBDNSName:
     Description: DNS name of the Application Load Balancer
-    Value: !Ref MyALB
+    Value: !GetAtt MyALB.DNSName
     Export:
       Name: 3tier-MyALBDNSName
 
@@ -206,4 +212,4 @@ Outputs:
     Description: ID of the Target Group associated with the ALB
     Value: !Ref MyALBTargetGroup
     Export:
-      Name: 3tier-MyALBTargetGroup    
+      Name: 3tier-MyALBTargetGroup

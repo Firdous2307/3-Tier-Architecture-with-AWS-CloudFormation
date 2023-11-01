@@ -1,0 +1,23 @@
+Description:  This template deploys an RDS database in a DB Subnet group that spans
+              2 AZs.
+
+Parameters:
+  DBUsername:
+    Description: Enter a username to be used with the RDS database
+    Type: String
+    Default: admin
+
+  DBPassword:
+    Description: Enter a password to be used with the RDS database
+    Type: String
+    Default: password
+
+Resources:
+  DBSubnetGroup:  
+    Type: AWS::RDS::DBSubnetGroup
+    Properties: 
+      DBSubnetGroupDescription: Subnet group for RDS
+      DBSubnetGroupName: db_subnet_group
+      SubnetIds:  
+        - !ImportValue 3tier-PrivateDBSubnet1
+        - !ImportValue 3tier-PrivateDBSubnet2

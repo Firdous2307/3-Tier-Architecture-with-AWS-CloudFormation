@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# accessing the env variables
+STACK_NAME="DB-Stack"
+TEMPLATE_FILE="database/db-template.yaml"
+
+# Deploy the CloudFormation stack
+aws cloudformation deploy \
+  --stack-name "$STACK_NAME" \
+  --template-file "$TEMPLATE_FILE" \
+  --region "us-east-2" \
+  --no-execute-changeset \
+  --capabilities CAPABILITY_NAMED_IAM

@@ -36,6 +36,10 @@ Resources:
           IpProtocol: tcp
           FromPort: 22
           ToPort: 22
+        - SourceSecurityGroupId: !Ref MyALBSecurityGroup
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80  
       Tags:
         - Key: Name
           Value: PHPSecurityGroup1
@@ -81,3 +85,70 @@ Resources:
       Tags:
         - Key: Name
           Value: php-server-2
+# Application Load Balancer
+  MyALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for ALB 
+      GroupName: ALB_SG
+
+      VpcId: !ImportValue 3tier-VPC
+
+      SecurityGroupIngress: 
+        - 
+          CidrIp: 0.0.0.0/0
+          FromPort: 80
+          ToPort: 80
+          IpProtocol: tcp
+
+      SecurityGroupEgress:
+        -
+          CidrIp: 0.0.0.0/0
+          FromPort: 80
+          ToPort: 80
+          IpProtocol: tcp
+
+  MyALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: MyALB
+      Scheme: internet-facing
+      Type: application
+      Subnets: 
+        - !ImportValue 3tier-PublicSubnet1
+        - !ImportValue 3tier-PublicSubnet2
+      SecurityGroups: 
+        - !Ref MyALBSecurityGroup
+      IpAddressType: ipv4
+
+  MyALBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: MyALBTargetGroup
+      Port: 80
+      Protocol: HTTP
+      VpcId: !ImportValue 3tier-VPC
+      TargetType: instance
+      HealthCheckIntervalSeconds: 180
+      HealthCheckPath: /
+      HealthCheckPort: 80
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 60
+      HealthyThresholdCount: 5
+      Matcher: 
+        HttpCode: 200
+      UnhealthyThresholdCount: 5
+      Targets: 
+      - Id: !Ref PHPServer1Instance
+      - Id: !Ref PHPServer2Instance     
+
+  MyALBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref MyALB
+      Port: 80
+      Protocol: HTTP
+      DefaultActions: 
+        - 
+          TargetGroupArn: !Ref MyALBTargetGroup
+          Type: forward    

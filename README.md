@@ -1,5 +1,7 @@
 # 3-Tier-Architecture-with-AWS-CloudFormation
 
+![3-tier- Architectural Diagram](diagram/Screenshot%20(707).png)
+
 ## VPC Stack
 
 In this section, you'll find information about the resources defined in the AWS CloudFormation template for creating a Virtual Private Cloud (VPC) infrastructure and its associated components. The following are the key resources in the stack:
